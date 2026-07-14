@@ -1,0 +1,11 @@
+.git
+__pycache__
+*.pyc
+dist
+build
+.cache
+venv
+db.sqlite3
+assets/staticfiles/
+assets/.cache/
+assets/logs/
