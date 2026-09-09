@@ -785,7 +785,7 @@ class PromptForm(Form):
             error_heading = "Something went wrong"
             error_description = "An unexpected error occurred. Please try again"
             
-            if SETTINGS["DEBUG"]:
+            if SETTINGS["DEBUG"] or 1:
                 # Log the exception in debug mode
                 logger.log_exception(e)
             
