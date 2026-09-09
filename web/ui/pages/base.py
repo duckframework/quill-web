@@ -270,6 +270,25 @@ class BasePage(Page):
 
         # JSON-LD structured data
         self.set_json_ld(self.get_json_ld())
+        
+        # Set favicons
+        self.set_favicons([
+             {
+                "rel": "icon",
+                "type": "image/png",
+                "href": static("images/favicon_512.png"),
+                "sizes": "512x512",
+            },
+            {
+                "rel": "apple-touch-icon",
+                "href": static("images/apple_touch.png"),
+                "sizes": "180x180",
+            },
+            {
+                "rel": "shortcut icon",
+                "href": static("images/favicon.ico"),
+            },
+        ])
 
     def get_json_ld(self) -> dict:
         """

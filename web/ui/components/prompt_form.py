@@ -17,6 +17,7 @@ from duck.html.components.textarea import TextArea
 from duck.html.components.modal import Modal
 from duck.html.components.link import Link
 from duck.html.components.icon import Icon
+from duck.html.components.span import Span
 from duck.html.components import to_component
 
 from duck.logging import logger
@@ -139,8 +140,7 @@ class RateLimitModal(Modal):
         title_row.style.update({"flex-direction": "row", "align-items": "center", "gap": "10px"})
         
         # Configure icon
-        icon = to_component("⚠️", "span")
-        icon.style["font-size"] = "1.4rem"
+        icon = Span(text="⚠️", style={"font-size": "1.4rem"})
         
         # Configure the title heading
         title = Heading("h3", text=heading)
@@ -297,7 +297,6 @@ class PromptForm(Form):
         )
         github_cta = Link(
             url=GITHUB_URL,
-            text="Available on Github",
             klass="github-cta",
             props={
                 "rel": "noopener noreferrer",
@@ -310,7 +309,7 @@ class PromptForm(Form):
                 "width": "fit-content",
             },
             children=[
-                Icon(inner_html=github_svg, style={"width": "16px", "height": "16px"}),
+                Paragraph(text="Available on Github"), Icon(inner_html=github_svg, style={"width": "16px", "height": "16px"}),
             ],
         )
         
