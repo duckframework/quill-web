@@ -460,6 +460,7 @@ async def stream_gemini(model: str, system: str, prompt: str) -> AsyncGenerator[
             config=types.GenerateContentConfig(
                 system_instruction=system,
                 max_output_tokens=SETTINGS.get("QUILL_MAX_TOKENS", 4096),
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True),
             ),
         )
 
