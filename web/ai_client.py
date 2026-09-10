@@ -441,46 +441,49 @@ async def stream_gemini(model: str, system: str, prompt: str) -> AsyncGenerator[
         system: The system prompt.
         prompt: The user prompt.
     """
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types
 
     # Check API key
     key = SETTINGS.get("GEMINI_API_KEY", "")
-    
+
     if not key:
         raise MissingApiKeyError("Gemini")
 
-    # Configure and create model
-    genai.configure(api_key=key)
-    gmodel = genai.GenerativeModel(model_name=model, system_instruction=system)
+    # Create client
+    client = genai.Client(api_key=key)
 
     try:
-        response = await gmodel.generate_content_async(
-            prompt,
-            stream=True,
-            generation_config={"max_output_tokens": SETTINGS.get("QUILL_MAX_TOKENS", 4096)},
+        stream = await client.aio.models.generate_content_stream(
+            model=model,
+            contents=prompt,
+            config=types.GenerateContentConfig(
+                system_instruction=system,
+                max_output_tokens=SETTINGS.get("QUILL_MAX_TOKENS", 4096),
+            ),
         )
-        
-        async for chunk in response:
+
+        async for chunk in stream:
             if chunk.text:
                 yield chunk.text
 
     except Exception as e:
         msg = str(e).lower()
-        
+
         # Detect insufficient credits error
         if is_insufficient_credits(str(e)):
             raise InsufficientCreditsError(provider="Gemini")
-        
+
         # Detect quota / rate limit errors
         if "quota" in msg or "429" in msg or "rate" in msg:
             now_utc = datetime.datetime.utcnow()
             midnight = (now_utc + datetime.timedelta(days=1)).replace(
                 hour=0, minute=0, second=0, microsecond=0
             )
-            
+
             # Get delta secs
             delta_secs = int((midnight - now_utc).total_seconds())
-            
+
             # Raise rate limit error
             raise RateLimitError(
                 provider="Gemini Flash (Google)",
