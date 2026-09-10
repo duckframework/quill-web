@@ -423,7 +423,7 @@ GEMINI_API_KEY: str = os.environ.get("GEMINI_API_KEY", "")
 GROQ_API_KEY: str = os.environ.get("GROQ_API_KEY", "")
 
 # Max tokens generated per design (applies to all providers)
-QUILL_MAX_TOKENS: int = 4096
+QUILL_MAX_TOKENS: int = 10_000
 
 
 # Available models shown in the UI selector
