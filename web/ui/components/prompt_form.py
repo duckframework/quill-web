@@ -657,6 +657,7 @@ class PromptForm(Form):
             
             if "<!doctype" in lower:
                 start = lower.find("<!doctype")
+                
             elif "<html" in lower:
                 start = lower.find("<html")
         
@@ -665,6 +666,7 @@ class PromptForm(Form):
         
             # Find end of document
             end = lower.rfind("</html>")
+            
             if end != -1:
                 end += len("</html>")
                 return content[start:end].strip()
@@ -887,7 +889,7 @@ class ImportForm(Form):
             },
         )
         sub = Paragraph(
-            inner_html="Fetch any URL and preview it as a downloadable design.",
+            text="Fetch any URL and preview it as a downloadable design.",
             style={"font-size": "0.82rem", "color": "rgba(255,255,255,0.35)", "margin": "4px 0 0"},
         )
         header = FlexContainer(style={"flex-direction": "column", "gap": "4px"})

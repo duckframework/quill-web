@@ -14,7 +14,7 @@ from duck.html.components.script import Script
 
 
 # Local path to the bundled html2canvas script
-HTML_2_CANVAS_SCRIPT_URL = static("js/html2canvas.min.js")
+HTML_2_CANVAS_SCRIPT_URL = static("js/html2canvas-pro.min.js")
 
 # All JS injected once — sanitizer, tab switching, preview helpers,
 # code editor, download, and streaming lifecycle functions
