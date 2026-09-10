@@ -530,14 +530,13 @@ async def stream_groq(model: str, system: str, prompt: str) -> AsyncGenerator[st
                 yield delta
 
     except groq.BadRequestError as e:
-        # Select model label
-        model_label = "Llama 3" if "llama" in model.lower() else "Mixtral"
+        model_label = get_groq_model_label(model)
         
         if is_insufficient_credits(str(e)):
-            raise InsufficientCreditsError(provider=f"{modal_label} (Groq)") from e
+            raise InsufficientCreditsError(provider=f"{model_label} (Groq)") from e
         raise
        
-    except groq.RateLimit as e:
+    except groq.RateLimitError as e:
         retry_after = None
         reset_str   = None
 
@@ -550,15 +549,45 @@ async def stream_groq(model: str, system: str, prompt: str) -> AsyncGenerator[st
             unit = match.group(2).lower()
             retry_after = int(value * 60 if unit == "m" else value)
             reset_str = format_reset_time(retry_after)
-
-        # Select model label
-        model_label = "Llama 3" if "llama" in model.lower() else "Mixtral"
+        
+        # Get model label
+        model_label = get_groq_model_label(model)
         
         raise RateLimitError(
             provider=f"{model_label} (Groq)",
             reset_time=reset_str,
             retry_after=retry_after,
         ) from e
+
+
+def get_groq_model_label(model: str) -> str:
+    """
+    Maps a Groq model ID to a short display label for error messages.
+
+    Args:
+        model: The Groq model ID string.
+
+    Returns:
+        A short human-readable label for the model family.
+    """
+    model_lower = model.lower()
+
+    if "kimi" in model_lower:
+        return "Kimi"
+        
+    if "qwen" in model_lower:
+        return "Qwen"
+        
+    if "gpt-oss" in model_lower:
+        return "GPT-OSS"
+        
+    if "deepseek" in model_lower:
+        return "DeepSeek"
+        
+    if "llama" in model_lower:
+        return "Llama"
+
+    return "Groq"
 
 
 def get_provider(model_id: str) -> str:
