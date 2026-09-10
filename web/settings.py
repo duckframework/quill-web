@@ -429,10 +429,10 @@ QUILL_MAX_TOKENS: int = 4096
 # Available models shown in the UI selector
 # Format: (model_id, display_label, provider)
 QUILL_MODELS: list = [
-    ("claude-sonnet-4-20250514", "✦ Claude Sonnet (default)", "anthropic"),
-    ("gemini-1.5-flash", "⚡ Gemini Flash — 1500/day free", "gemini"),
-    ("llama-3.3-70b-versatile", "🦙 Llama 3.3 70B via Groq", "groq"),
-    ("qwen/qwen3-32b", "🧠 Qwen3 32B via Groq", "groq"),
+    ("claude-sonnet-5", "✦ Claude Sonnet (default)", "anthropic"),
+    ("gemini-3.6-flash", "⚡ Gemini Flash — free tier", "gemini"),
+    ("moonshotai/kimi-k2-instruct-0905", "🎨 Kimi K2 — frontend/UI via Groq", "groq"),
+    ("openai/gpt-oss-120b", "🧠 GPT-OSS 120B via Groq", "groq"),
 ]
 
 # Dummy mode — set to True to test without any API keys.
